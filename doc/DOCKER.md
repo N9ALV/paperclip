@@ -42,6 +42,24 @@ Optional overrides:
 PAPERCLIP_PORT=3200 PAPERCLIP_DATA_DIR=./data/pc docker compose -f docker-compose.quickstart.yml up --build
 ```
 
+## Railway Deployment Notes
+
+Railway blocks the Dockerfile `VOLUME` instruction. Paperclip's Dockerfile intentionally does not declare `VOLUME`; configure persistence in Railway itself.
+
+Recommended Railway setup:
+
+- Deploy from GitHub repo (remote build on Railway)
+- Add a Railway Volume mounted at `/paperclip`
+- Set env vars:
+  - `HOST=0.0.0.0`
+  - `PORT=${{PORT}}` (or leave default and let Railway inject `PORT`)
+  - `PAPERCLIP_HOME=/paperclip`
+  - `PAPERCLIP_CONFIG=/paperclip/instances/default/config.json`
+  - `PAPERCLIP_DEPLOYMENT_MODE=authenticated` for internet-exposed deployments
+  - `OPENAI_API_KEY` and/or `ANTHROPIC_API_KEY` as needed for adapters
+
+This keeps embedded Postgres, local secrets key, and storage persisted on the Railway Volume.
+
 ## Claude + Codex Local Adapters in Docker
 
 The image pre-installs:

@@ -190,6 +190,19 @@ This starts the API server at `http://localhost:3100`. An embedded PostgreSQL da
 
 > **Requirements:** Node.js 20+, pnpm 9.15+
 
+### Railway quick note
+
+When deploying with Docker on Railway, do not use Dockerfile `VOLUME`. Paperclip's Dockerfile is Railway-compatible; configure persistence using a Railway Volume mounted at `/paperclip`.
+
+Set:
+
+- `HOST=0.0.0.0`
+- `PAPERCLIP_HOME=/paperclip`
+- `PAPERCLIP_CONFIG=/paperclip/instances/default/config.json`
+- `PAPERCLIP_DEPLOYMENT_MODE=authenticated` for public deployments
+
+See [doc/DOCKER.md](doc/DOCKER.md) for details.
+
 <br/>
 
 ## FAQ
